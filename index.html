@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Menu Nhà Hàng</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body{ background:#f7f7f9; }
+    .card:hover{ transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+    .price{ font-weight:600; }
+    .badge-space{ gap:.25rem; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">🍜 Nhà Hàng ABC</a>
+      <div class="text-end d-none d-md-block small text-white-50">Giờ mở cửa: 9:00–22:00 • Hotline: 0909 000 000</div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <!-- Ô tìm kiếm + filter -->
+    <div class="row g-2 align-items-center">
+      <div class="col-12 col-md-8">
+        <input id="search" class="form-control" placeholder="Tìm món (vd: phở, bò, chay)">
+      </div>
+      <div class="col-12 col-md-4 text-md-end">
+        <div class="btn-group" role="group">
+          <button class="btn btn-outline-dark" data-filter="all">Tất cả</button>
+          <button class="btn btn-outline-dark" data-filter="signature">Nổi bật</button>
+          <button class="btn btn-outline-dark" data-filter="vegetarian">Chay</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs danh mục -->
+    <ul class="nav nav-pills mt-3" id="categoryTabs"></ul>
+
+    <!-- Khu vực hiển thị món -->
+    <div class="row g-3 mt-1" id="menuGrid" aria-live="polite"></div>
+
+    <div class="mt-4 small text-muted">
+      *Giá đã bao gồm VAT • Vui lòng gọi phục vụ để đặt món hoặc quét thêm QR đặt món (nếu có)
+    </div>
+  </main>
+
+  <footer class="border-top py-3">
+    <div class="container d-flex flex-wrap gap-2 justify-content-between align-items-center">
+      <div class="small text-muted">© 2025 Nhà Hàng ABC</div>
+      <div class="small">
+        <a href="tel:0909000000" class="btn btn-sm btn-dark">Gọi đặt món</a>
+        <a target="_blank" href="https://zalo.me/" class="btn btn-sm btn-outline-dark">Nhắn Zalo</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  // Dữ liệu menu mẫu
+  const MENU_DATA = {
+    categories: [
+      { id: 'pho', name: 'Phở' },
+      { id: 'com', name: 'Cơm' },
+      { id: 'lau', name: 'Lẩu' },
+      { id: 'nuoc', name: 'Đồ uống' }
+    ],
+    items: [
+      { id:'P01', name:'Phở Bò Tái', price:55000, cat:'pho', signature:true, vegetarian:false, desc:'Bánh phở mềm, nước dùng bò thơm', img:'https://picsum.photos/seed/pho/400/260' },
+      { id:'P02', name:'Phở Gà', price:50000, cat:'pho', vegetarian:false, desc:'Thịt gà ta, hành lá, gừng nướng', img:'https://picsum.photos/seed/chicken/400/260' },
+      { id:'C01', name:'Cơm Gà Xối Mỡ', price:60000, cat:'com', signature:true, vegetarian:false, desc:'Cơm tấm, gà giòn rụm', img:'https://picsum.photos/seed/rice/400/260' },
+      { id:'C02', name:'Cơm Chiên Rau Củ', price:45000, cat:'com', vegetarian:true, desc:'Rau củ tươi, ít dầu', img:'https://picsum.photos/seed/vegrice/400/260' },
+      { id:'L01', name:'Lẩu Thái Hải Sản', price:220000, cat:'lau', signature:true, vegetarian:false, desc:'Chua cay đậm vị', img:'https://picsum.photos/seed/hotpot/400/260' },
+      { id:'N01', name:'Trà Tắc', price:20000, cat:'nuoc', vegetarian:true, desc:'Vị tắc mát lạnh', img:'https://picsum.photos/seed/tea/400/260' }
+    ]
+  };
+
+  const $ = (sel, ctx=document) => ctx.querySelector(sel);
+  const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+
+  const state = { cat:'all', search:'', filter:'all' };
+  const menuGrid = $('#menuGrid');
+  const tabs = $('#categoryTabs');
+  const search = $('#search');
+  const filterBtns = $$('[data-filter]');
+
+  function renderTabs(){
+    tabs.innerHTML = '';
+    tabs.innerHTML += `<li class="nav-item"><button class="nav-link active" data-cat="all">Tất cả</button></li>`;
+    MENU_DATA.categories.forEach(c=>{
+      tabs.innerHTML += `<li class="nav-item"><button class="nav-link" data-cat="${c.id}">${c.name}</button></li>`;
+    });
+    tabs.addEventListener('click', e=>{
+      const btn = e.target.closest('[data-cat]');
+      if(!btn) return;
+      $$('.nav-link', tabs).forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      state.cat = btn.getAttribute('data-cat');
+      renderMenu();
+    });
+  }
+
+  const vnd = (n)=> n.toLocaleString('vi-VN',{style:'currency',currency:'VND'});
+
+  function renderMenu(){
+    const q = state.search.toLowerCase();
+    const items = MENU_DATA.items.filter(it=>{
+      const byCat = state.cat==='all' ? true : it.cat===state.cat;
+      const byTxt = !q || it.name.toLowerCase().includes(q) || (it.desc||'').toLowerCase().includes(q);
+      const byFilter = state.filter==='all' ? true : (
+        state.filter==='signature' ? it.signature : (state.filter==='vegetarian' ? !!it.vegetarian : true)
+      );
+      return byCat && byTxt && byFilter;
+    });
+    if(items.length===0){ menuGrid.innerHTML = `<div class="col-12 text-center text-muted py-5">Không tìm thấy món phù hợp</div>`; return; }
+    menuGrid.innerHTML = items.map(it=>`
+      <div class="col-12 col-sm-6 col-lg-4">
+        <div class="card h-100">
+          ${it.img ? `<img class="card-img-top" src="${it.img}" alt="${it.name}">` : ''}
+          <div class="card-body d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start">
+              <h6 class="card-title mb-1">${it.name}</h6>
+              <div class="price">${vnd(it.price)}</div>
+            </div>
+            ${it.desc ? `<p class="card-text small text-muted mb-2">${it.desc}</p>` : ''}
+            <div class="mt-auto d-flex badge-space">
+              ${it.signature ? '<span class="badge text-bg-dark">Nổi bật</span>' : ''}
+              ${it.vegetarian ? '<span class="badge text-bg-success">Chay</span>' : ''}
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  search.addEventListener('input', e=>{ state.search=e.target.value; renderMenu(); });
+  filterBtns.forEach(b=> b.addEventListener('click', ()=>{ filterBtns.forEach(x=>x.classList.remove('active')); b.classList.add('active'); state.filter=b.dataset.filter; renderMenu(); }));
+
+  renderTabs();
+  renderMenu();
+  </script>
+</body>
+</html>

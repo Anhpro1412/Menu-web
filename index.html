@@ -1,143 +1,317 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Menu Nhà Hàng</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body{ background:#f7f7f9; }
-    .card:hover{ transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.08); }
-    .price{ font-weight:600; }
-    .badge-space{ gap:.25rem; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DHA Food – Bánh Mì & Phở Việt</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  /* ====== Theme (nhẹ, hiện đại) ====== */
+  :root{
+    --bg:#0f1115; --fg:#eaeef6; --muted:#96a0b5;
+    --accent:#ffb703; --accent2:#fb5607; --card:#171a22;
+    --border:rgba(255,255,255,.06);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--fg);font-family:"Be Vietnam Pro",system-ui,Segoe UI,Roboto}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+
+  /* ====== Hero ====== */
+  .hero{
+    position:relative; overflow:hidden; isolation:isolate; min-height:58vh;
+    display:grid; place-items:center; text-align:center;
+    background:radial-gradient(1000px 600px at 80% -20%, rgba(251,86,7,.16), transparent 60%),
+               radial-gradient(900px 500px at -10% 120%, rgba(255,183,3,.18), transparent 60%),
+               linear-gradient(180deg,#0f1115 0%, #0b0d12 100%);
+  }
+  .hero::after{ /* lớp ánh sáng mờ chuyển động */
+    content:""; position:absolute; inset:0; z-index:-1;
+    background:conic-gradient(from 180deg at 50% 120%, rgba(251,86,7,.12), rgba(255,183,3,.10), transparent 40%);
+    filter: blur(70px); transform: translateY(-6%);
+    animation: drift 14s ease-in-out infinite alternate;
+  }
+  @keyframes drift{to{transform:translateY(6%) rotate(3deg);filter:blur(100px)}}
+  .brand{display:inline-flex;gap:.5rem;align-items:center;padding:.4rem .8rem;border-radius:999px;
+         background:linear-gradient(135deg,rgba(251,86,7,.25),rgba(255,183,3,.18));font-weight:700}
+  .title{font-size:clamp(28px,5vw,56px);font-weight:800;letter-spacing:.4px;margin:.4rem 0 0}
+  .subtitle{color:var(--muted);max-width:760px;margin:10px auto 0}
+
+  .cta{
+    margin-top:18px; display:inline-flex;gap:.6rem;align-items:center;
+    padding:.65rem 1rem;border-radius:12px;border:1px solid var(--border);
+    background:linear-gradient(135deg,rgba(255,183,3,.12),rgba(251,86,7,.14));
+    font-weight:700; cursor:pointer; transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .cta:hover{transform:translateY(-2px); box-shadow:0 10px 28px rgba(0,0,0,.35)}
+
+  /* ====== Sections ====== */
+  .section{padding:56px 20px;max-width:1100px;margin:auto}
+  .heading{font-size:clamp(20px,3.2vw,32px);margin:0 0 4px;font-weight:800}
+  .muted{color:var(--muted);margin:0 0 14px}
+
+  /* ====== Grid cards ====== */
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+  .col-4{grid-column:span 12}
+  @media (min-width:640px){.col-4{grid-column:span 6}}
+  @media (min-width:1024px){.col-4{grid-column:span 4}}
+
+  .card{
+    position:relative; background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));
+    border:1px solid var(--border); border-radius:18px; overflow:hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    transform: translateY(8px); opacity:0;
+    transition: transform .6s cubic-bezier(.2,.7,.2,1), opacity .6s cubic-bezier(.2,.7,.2,1), box-shadow .3s, border-color .3s;
+  }
+  .card.visible{transform:translateY(0); opacity:1}
+  .media{aspect-ratio:4/3; background:#10131a; overflow:hidden}
+  .media img{width:100%;height:100%;object-fit:cover;transform:scale(1.04);transition:transform .6s ease}
+  .card:hover .media img{transform:scale(1.08)}
+  .badge{
+    position:absolute; top:10px; left:10px; padding:.35rem .6rem; font-size:12px; font-weight:800;
+    border-radius:999px; backdrop-filter: blur(8px);
+    background:linear-gradient(135deg,rgba(251,86,7,.9),rgba(255,183,3,.9)); color:#111;
+    box-shadow: 0 6px 18px rgba(251,86,7,.35);
+  }
+  .body{padding:14px 14px 16px}
+  .rowx{display:flex; align-items:center; justify-content:space-between; gap:10px}
+  .name{font-weight:800; letter-spacing:.2px}
+  .price{
+    font-weight:900;
+    background-image: linear-gradient(90deg, rgba(255,255,255,0) 0%, #ffd166 25%, #ff9f1c 50%, #ffd166 75%, rgba(255,255,255,0) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    background-size:200% 100%; animation: shine 2.2s ease-in-out 1 .6s;
+  }
+  @keyframes shine {from{background-position:-200% 0} to{background-position:200% 0}}
+  .desc{margin:6px 0 10px; color:var(--muted); font-size:14px; line-height:1.55}
+
+  /* ====== Owner / Contact ====== */
+  .owner{
+    display:grid;grid-template-columns:1fr;gap:16px;align-items:center;
+    background:linear-gradient(135deg,rgba(255,183,3,.08),rgba(251,86,7,.08));
+    border:1px solid var(--border); border-radius:18px; padding:18px;
+  }
+  @media (min-width:768px){ .owner{grid-template-columns:120px 1fr} }
+  .avatar{
+    width:100%;max-width:120px;aspect-ratio:1/1;border-radius:14px;overflow:hidden;
+    border:1px solid var(--border);box-shadow:0 8px 26px rgba(0,0,0,.35)
+  }
+  .info{font-size:14px}
+  .pill{display:inline-flex;gap:.4rem;align-items:center;padding:.35rem .6rem;border-radius:999px;
+        border:1px solid var(--border); background:rgba(255,255,255,.03)}
+
+  footer{padding:38px 20px;color:var(--muted);text-align:center;border-top:1px solid var(--border)}
+  .btn-top{position:fixed;right:16px;bottom:16px;z-index:10;opacity:.85}
+  .btn-top button{padding:.65rem .9rem;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.06);color:var(--fg);font-weight:800;cursor:pointer}
+  .btn-top button:hover{transform:translateY(-2px)}
+</style>
 </head>
 <body>
-  <nav class="navbar navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="#">🍜 Nhà Hàng ABC</a>
-      <div class="text-end d-none d-md-block small text-white-50">Giờ mở cửa: 9:00–22:00 • Hotline: 0909 000 000</div>
+
+  <!-- HERO -->
+  <header class="hero" id="top">
+    <div>
+      <div class="brand">DHA Food • Bánh Mì & Phở Việt</div>
+      <h1 class="title">Ngon đúng điệu – Đậm vị Việt</h1>
+      <p class="subtitle">Bữa ăn nhanh gọn mà chất lượng: bánh mì giòn rụm, phở nóng hổi, đồ uống mát lành. Thành phần tươi – chế biến kỹ – phục vụ tận tâm.</p>
+      <a href="#menu" class="cta">Xem thực đơn ↓</a>
     </div>
-  </nav>
+  </header>
 
-  <main class="container py-4">
-    <!-- Ô tìm kiếm + filter -->
-    <div class="row g-2 align-items-center">
-      <div class="col-12 col-md-8">
-        <input id="search" class="form-control" placeholder="Tìm món (vd: phở, bò, chay)">
-      </div>
-      <div class="col-12 col-md-4 text-md-end">
-        <div class="btn-group" role="group">
-          <button class="btn btn-outline-dark" data-filter="all">Tất cả</button>
-          <button class="btn btn-outline-dark" data-filter="signature">Nổi bật</button>
-          <button class="btn btn-outline-dark" data-filter="vegetarian">Chay</button>
-        </div>
-      </div>
-    </div>
+  <!-- MENU -->
+  <section class="section" id="menu">
+    <h2 class="heading">Thực đơn hôm nay</h2>
+    <p class="muted">Chọn món bạn thích – giá hiển thị theo VNĐ. Ảnh minh họa, có thể khác nhẹ so với thực tế.</p>
 
-    <!-- Tabs danh mục -->
-    <ul class="nav nav-pills mt-3" id="categoryTabs"></ul>
-
-    <!-- Khu vực hiển thị món -->
-    <div class="row g-3 mt-1" id="menuGrid" aria-live="polite"></div>
-
-    <div class="mt-4 small text-muted">
-      *Giá đã bao gồm VAT • Vui lòng gọi phục vụ để đặt món hoặc quét thêm QR đặt món (nếu có)
-    </div>
-  </main>
-
-  <footer class="border-top py-3">
-    <div class="container d-flex flex-wrap gap-2 justify-content-between align-items-center">
-      <div class="small text-muted">© 2025 Nhà Hàng ABC</div>
-      <div class="small">
-        <a href="tel:0909000000" class="btn btn-sm btn-dark">Gọi đặt món</a>
-        <a target="_blank" href="https://zalo.me/" class="btn btn-sm btn-outline-dark">Nhắn Zalo</a>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-  // Dữ liệu menu mẫu
-  const MENU_DATA = {
-    categories: [
-      { id: 'pho', name: 'Phở' },
-      { id: 'com', name: 'Cơm' },
-      { id: 'lau', name: 'Lẩu' },
-      { id: 'nuoc', name: 'Đồ uống' }
-    ],
-    items: [
-      { id:'P01', name:'Phở Bò Tái', price:55000, cat:'pho', signature:true, vegetarian:false, desc:'Bánh phở mềm, nước dùng bò thơm', img:'https://picsum.photos/seed/pho/400/260' },
-      { id:'P02', name:'Phở Gà', price:50000, cat:'pho', vegetarian:false, desc:'Thịt gà ta, hành lá, gừng nướng', img:'https://picsum.photos/seed/chicken/400/260' },
-      { id:'C01', name:'Cơm Gà Xối Mỡ', price:60000, cat:'com', signature:true, vegetarian:false, desc:'Cơm tấm, gà giòn rụm', img:'https://picsum.photos/seed/rice/400/260' },
-      { id:'C02', name:'Cơm Chiên Rau Củ', price:45000, cat:'com', vegetarian:true, desc:'Rau củ tươi, ít dầu', img:'https://picsum.photos/seed/vegrice/400/260' },
-      { id:'L01', name:'Lẩu Thái Hải Sản', price:220000, cat:'lau', signature:true, vegetarian:false, desc:'Chua cay đậm vị', img:'https://picsum.photos/seed/hotpot/400/260' },
-      { id:'N01', name:'Trà Tắc', price:20000, cat:'nuoc', vegetarian:true, desc:'Vị tắc mát lạnh', img:'https://picsum.photos/seed/tea/400/260' }
-    ]
-  };
-
-  const $ = (sel, ctx=document) => ctx.querySelector(sel);
-  const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
-
-  const state = { cat:'all', search:'', filter:'all' };
-  const menuGrid = $('#menuGrid');
-  const tabs = $('#categoryTabs');
-  const search = $('#search');
-  const filterBtns = $$('[data-filter]');
-
-  function renderTabs(){
-    tabs.innerHTML = '';
-    tabs.innerHTML += `<li class="nav-item"><button class="nav-link active" data-cat="all">Tất cả</button></li>`;
-    MENU_DATA.categories.forEach(c=>{
-      tabs.innerHTML += `<li class="nav-item"><button class="nav-link" data-cat="${c.id}">${c.name}</button></li>`;
-    });
-    tabs.addEventListener('click', e=>{
-      const btn = e.target.closest('[data-cat]');
-      if(!btn) return;
-      $$('.nav-link', tabs).forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      state.cat = btn.getAttribute('data-cat');
-      renderMenu();
-    });
-  }
-
-  const vnd = (n)=> n.toLocaleString('vi-VN',{style:'currency',currency:'VND'});
-
-  function renderMenu(){
-    const q = state.search.toLowerCase();
-    const items = MENU_DATA.items.filter(it=>{
-      const byCat = state.cat==='all' ? true : it.cat===state.cat;
-      const byTxt = !q || it.name.toLowerCase().includes(q) || (it.desc||'').toLowerCase().includes(q);
-      const byFilter = state.filter==='all' ? true : (
-        state.filter==='signature' ? it.signature : (state.filter==='vegetarian' ? !!it.vegetarian : true)
-      );
-      return byCat && byTxt && byFilter;
-    });
-    if(items.length===0){ menuGrid.innerHTML = `<div class="col-12 text-center text-muted py-5">Không tìm thấy món phù hợp</div>`; return; }
-    menuGrid.innerHTML = items.map(it=>`
-      <div class="col-12 col-sm-6 col-lg-4">
-        <div class="card h-100">
-          ${it.img ? `<img class="card-img-top" src="${it.img}" alt="${it.name}">` : ''}
-          <div class="card-body d-flex flex-column">
-            <div class="d-flex justify-content-between align-items-start">
-              <h6 class="card-title mb-1">${it.name}</h6>
-              <div class="price">${vnd(it.price)}</div>
-            </div>
-            ${it.desc ? `<p class="card-text small text-muted mb-2">${it.desc}</p>` : ''}
-            <div class="mt-auto d-flex badge-space">
-              ${it.signature ? '<span class="badge text-bg-dark">Nổi bật</span>' : ''}
-              ${it.vegetarian ? '<span class="badge text-bg-success">Chay</span>' : ''}
-            </div>
+    <!-- BÁNH MÌ -->
+    <h3 class="heading" style="margin-top:22px">Bánh mì</h3>
+    <div class="grid" id="banhmi">
+      <!-- EDIT HERE: thay ảnh bằng ảnh thật của quán (đặt cùng thư mục hoặc link online). -->
+      <div class="col-4">
+        <article class="card">
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop" alt="Bánh mì thịt đặc biệt" loading="lazy">
+            <span class="badge">Best-seller</span>
           </div>
+          <div class="body">
+            <div class="rowx">
+              <div class="name">Bánh mì thịt đặc biệt</div>
+              <div class="price">35.000₫</div>
+            </div>
+            <p class="desc">Patê nhà làm, chả lụa, thịt nguội, đồ chua giòn – sốt mayo cay nhẹ.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-4">
+        <article class="card">
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1612320653238-8043cb4005a2?q=80&w=1200&auto=format&fit=crop" alt="Bánh mì gà xé" loading="lazy">
+          </div>
+          <div class="body">
+            <div class="rowx">
+              <div class="name">Bánh mì gà xé</div>
+              <div class="price">30.000₫</div>
+            </div>
+            <p class="desc">Gà xé mềm, dưa leo, rau thơm – sốt bơ tỏi.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-4">
+        <article class="card">
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1599021256205-c7b796531834?q=80&w=1200&auto=format&fit=crop" alt="Bánh mì chay nấm" loading="lazy">
+          </div>
+          <div class="body">
+            <div class="rowx">
+              <div class="name">Bánh mì chay nấm</div>
+              <div class="price">28.000₫</div>
+            </div>
+            <p class="desc">Nấm xào tiêu xanh, pate chay, đồ chua hài hòa.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- PHỞ -->
+    <h3 class="heading" style="margin-top:28px">Phở</h3>
+    <div class="grid" id="pho">
+      <div class="col-4">
+        <article class="card">
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop" alt="Phở bò tái nạm" loading="lazy">
+            <span class="badge">Signature</span>
+          </div>
+          <div class="body">
+            <div class="rowx">
+              <div class="name">Phở bò tái nạm</div>
+              <div class="price">55.000₫</div>
+            </div>
+            <p class="desc">Nước dùng đậm vị xương, bánh phở mềm, hành ngò thơm.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-4">
+        <article class="card">
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1625940652831-31f1cc4f6ac0?q=80&w=1200&auto=format&fit=crop" alt="Phở gà ta" loading="lazy">
+          </div>
+          <div class="body">
+            <div class="rowx">
+              <div class="name">Phở gà ta</div>
+              <div class="price">50.000₫</div>
+            </div>
+            <p class="desc">Thịt gà ta chắc, nước thơm gừng nướng & hành.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-4">
+        <article class="card">
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1562967914-608f82629710?q=80&w=1200&auto=format&fit=crop" alt="Phở chay" loading="lazy">
+          </div>
+          <div class="body">
+            <div class="rowx">
+              <div class="name">Phở chay</div>
+              <div class="price">45.000₫</div>
+            </div>
+            <p class="desc">Nước dùng nấm – thanh nhẹ, topping đậu hũ & rau củ.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- ĐỒ UỐNG -->
+    <h3 class="heading" style="margin-top:28px">Đồ uống</h3>
+    <p class="muted">Thêm năng lượng cho ngày mới.</p>
+    <div class="grid" id="nuoc">
+      <div class="col-4">
+        <article class="card">
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1543968996-ee822b8176ba?q=80&w=1200&auto=format&fit=crop" alt="Trà tắc" loading="lazy">
+          </div>
+          <div class="body">
+            <div class="rowx">
+              <div class="name">Trà tắc</div>
+              <div class="price">20.000₫</div>
+            </div>
+            <p class="desc">Chua ngọt dịu, mát lạnh.</p>
+          </div>
+        </article>
+      </div>
+      <div class="col-4">
+        <article class="card">
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1509043759401-136742328bb3?q=80&w=1200&auto=format&fit=crop" alt="Cà phê sữa đá" loading="lazy">
+          </div>
+          <div class="body">
+            <div class="rowx">
+              <div class="name">Cà phê sữa đá</div>
+              <div class="price">22.000₫</div>
+            </div>
+            <p class="desc">Đậm đà vị Việt, thơm lừng.</p>
+          </div>
+        </article>
+      </div>
+      <div class="col-4">
+        <article class="card">
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1600275669439-14e40452d20e?q=80&w=1200&auto=format&fit=crop" alt="Soda chanh" loading="lazy">
+          </div>
+          <div class="body">
+            <div class="rowx">
+              <div class="name">Soda chanh</div>
+              <div class="price">25.000₫</div>
+            </div>
+            <p class="desc">Sảng khoái, nhẹ nhàng có gas.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- OWNER / CONTACT -->
+  <section class="section" id="contact">
+    <h2 class="heading">DHA Food • Thông tin cửa hàng</h2>
+    <p class="muted">Cảm ơn bạn đã ghé! Liên hệ đặt món & góp ý để chúng mình phục vụ tốt hơn.</p>
+    <div class="owner">
+      <!-- EDIT HERE: thay ảnh chủ quán / logo -->
+      <img class="avatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop" alt="Chủ quán">
+
+      <div class="info">
+        <!-- EDIT HERE: thông tin cá nhân của bạn -->
+        <p style="margin:.2rem 0 6px"><strong>Chủ quán:</strong> <span id="owner-name">Nguyễn Văn A</span></p>
+        <p class="muted" style="margin:.2rem 0 10px">“Tận tâm với từng ổ bánh – tô phở.”</p>
+        <div class="pill" style="margin-bottom:8px;">📍 <span id="owner-addr">123 Đường 3/2, Q.10, TP.HCM</span></div>
+        <div class="pill" style="margin-bottom:8px;">📞 <a href="tel:0909123456" id="owner-phone">0909 123 456</a></div>
+        <div class="pill">🕘 <span id="owner-time">Mở cửa: 6:00 – 22:00 (T2–CN)</span></div>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <!-- EDIT HERE: thêm link Zalo/Facebook/Gmaps của bạn -->
+          <a class="pill" href="https://zalo.me/" target="_blank">Zalo</a>
+          <a class="pill" href="https://facebook.com/" target="_blank">Facebook</a>
+          <a class="pill" href="https://maps.google.com/?q=123%203/2%20Q10%20TPHCM" target="_blank">Google Maps</a>
         </div>
       </div>
-    `).join('');
-  }
+    </div>
+  </section>
 
-  search.addEventListener('input', e=>{ state.search=e.target.value; renderMenu(); });
-  filterBtns.forEach(b=> b.addEventListener('click', ()=>{ filterBtns.forEach(x=>x.classList.remove('active')); b.classList.add('active'); state.filter=b.dataset.filter; renderMenu(); }));
+  <div class="btn-top"><button onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Lên đầu</button></div>
 
-  renderTabs();
-  renderMenu();
-  </script>
+  <footer>© 2025 DHA Food. Made with ❤ Việt Nam.</footer>
+
+<script>
+  // ==== Hiệu ứng nhẹ: hiện dần khi cuộn (IntersectionObserver) ====
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target) } })
+  }, {threshold:.12});
+  document.querySelectorAll('.card').forEach(el=> io.observe(el));
+
+  // (Tuỳ chọn) Bạn có thể đổi thông tin chủ quán bằng JS nếu muốn lấy từ nơi khác:
+  // document.getElementById('owner-name').textContent = 'Tên của bạn';
+</script>
 </body>
 </html>

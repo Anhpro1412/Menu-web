@@ -8,8 +8,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    
-    .actions{ display:none !important; }
+    .actions {
+      display: none !important;
+    }
 
     :root {
       --bg: #0f1115;
@@ -418,7 +419,7 @@
     #chat-fab {
       position: fixed;
       right: 20px;
-      bottom: calc(20px + var(--chat-offset));
+      bottom: calc(105px + var(--chat-offset));
       z-index: 10001;
       width: 52px;
       height: 52px;
@@ -450,8 +451,10 @@
       box-shadow: 0 6px 20px rgba(0, 0, 0, .4);
       z-index: 10000;
     }
-    
-    #chatbox.hidden { display: none }
+
+    #chatbox.hidden {
+      display: none
+    }
 
     #chat-header {
       background: #fb5607;
@@ -521,6 +524,325 @@
       cursor: pointer;
       border-radius: 0 0 12px 0;
     }
+
+    :root {
+      --safe-bottom: 80px;
+    }
+
+    /* đã dùng cho chat box; để tránh chồng chéo */
+
+    /* Nút mở giỏ */
+    #cart-toggle {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      z-index: 10010;
+      background: #ffb703;
+      color: #111;
+      border: 1px solid rgba(0, 0, 0, .2);
+      border-radius: 999px;
+      padding: .55rem .8rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
+    }
+
+    #cart-toggle span {
+      background: #111;
+      color: #ffb703;
+      padding: .1rem .45rem;
+      border-radius: 999px;
+      margin-left: .35rem
+    }
+
+    /* Drawer giỏ */
+    #cart-drawer {
+      position: fixed;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: min(92vw, 360px);
+      background: #0f1115;
+      border-left: 1px solid var(--border);
+      z-index: 10020;
+      transform: translateX(100%);
+      transition: transform .25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #cart-drawer.open {
+      transform: translateX(0)
+    }
+
+    #cart-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .45);
+      backdrop-filter: blur(2px);
+      z-index: 10015;
+      display: none;
+    }
+
+    #cart-backdrop.show {
+      display: block
+    }
+
+    #cart-drawer header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    #cart-drawer header button {
+      background: transparent;
+      color: var(--fg);
+      border: 0;
+      font-size: 18px;
+      cursor: pointer
+    }
+
+    #cart-items {
+      flex: 1;
+      overflow: auto;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .cart-row {
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px
+    }
+
+    .cart-row img {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 8px
+    }
+
+    .cart-row .name {
+      font-weight: 700
+    }
+
+    .cart-row .ctrl {
+      display: flex;
+      gap: 6px;
+      align-items: center
+    }
+
+    .cart-row .ctrl button {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, .04);
+      color: var(--fg);
+      cursor: pointer
+    }
+
+    #cart-drawer footer {
+      padding: 12px;
+      border-top: 1px solid var(--border);
+      display: grid;
+      gap: 8px
+    }
+
+    #cart-drawer footer .line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px
+    }
+
+    #cart-drawer footer .ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--fg);
+      padding: .6rem .8rem;
+      border-radius: 10px;
+      cursor: pointer
+    }
+
+    #cart-checkout {
+      background: linear-gradient(135deg, rgba(255, 183, 3, .25), rgba(251, 86, 7, .25));
+      color: #111;
+      font-weight: 900;
+      border: 1px solid var(--border);
+      padding: .7rem .9rem;
+      border-radius: 10px;
+      cursor: pointer
+    }
+
+    /* Modal chi tiết */
+    #item-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .55);
+      z-index: 10030;
+      display: grid;
+      place-items: center
+    }
+
+    #item-modal.hidden {
+      display: none
+    }
+
+    #item-modal .sheet {
+      width: min(92vw, 520px);
+      background: #0f1115;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px
+    }
+
+    #item-modal .sheet img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 10px
+    }
+
+    #item-modal .sheet h3 {
+      margin: 8px 0 4px;
+      font-weight: 800
+    }
+
+    #item-modal .sheet #item-price {
+      font-weight: 900;
+      color: #ffd166;
+      margin-bottom: 8px
+    }
+
+    #item-modal .sheet .close {
+      position: absolute;
+      transform: translate(calc(50vw - 260px), -6px);
+      background: transparent;
+      color: var(--fg);
+      border: 0;
+      font-size: 18px;
+      cursor: pointer
+    }
+
+    #item-modal .qty {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin: 8px 0 12px
+    }
+
+    #item-modal .qty button {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, .05);
+      color: var(--fg);
+      cursor: pointer
+    }
+
+    #item-modal button#add-to-cart {
+      width: 100%;
+      background: #ffb703;
+      color: #111;
+      font-weight: 900;
+      border: 1px solid var(--border);
+      padding: .8rem;
+      border-radius: 12px;
+      cursor: pointer
+    }
+
+    /* tránh đè nút ↑ và chatbox */
+    #chatbox {
+      bottom: var(--safe-bottom)
+    }
+
+    /* CHECKOUT MODAL */
+    #checkout-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .55);
+      z-index: 10040;
+      display: grid;
+      place-items: center
+    }
+
+    #checkout-modal.hidden {
+      display: none
+    }
+
+    #checkout-modal .sheet {
+      width: min(92vw, 520px);
+      background: #0f1115;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      position: relative
+    }
+
+    #checkout-modal .close {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: transparent;
+      color: var(--fg);
+      border: 0;
+      font-size: 18px;
+      cursor: pointer
+    }
+
+    #checkout-form .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 10px
+    }
+
+    #checkout-form input,
+    #checkout-form select,
+    #checkout-form textarea {
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      border-radius: 10px;
+      padding: .6rem .8rem;
+      outline: 0;
+    }
+
+    #checkout-form .sum {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid var(--border);
+      margin: 8px 0 12px
+    }
+
+    #ck-submit {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(255, 183, 3, .25), rgba(251, 86, 7, .25));
+      color: #111;
+      font-weight: 900;
+      border: 1px solid var(--border);
+      padding: .8rem;
+      border-radius: 12px;
+      cursor: pointer
+    }
+
+    #ck-submit[disabled] {
+      opacity: .6;
+      cursor: wait
+    }
   </style>
 
 </head>
@@ -534,6 +856,86 @@
     <button id="chat-send">Gửi</button>
   </div>
 </div>
+
+<!-- CART TOGGLE -->
+<button id="cart-toggle" aria-label="Mở giỏ hàng">🧺 <span id="cart-count">0</span></button>
+
+<!-- CART DRAWER -->
+<aside id="cart-drawer" aria-hidden="true">
+  <header>
+    <strong>Giỏ hàng</strong>
+    <button id="cart-close">✕</button>
+  </header>
+  <div id="cart-items"></div>
+  <footer>
+    <div class="line"><span>Tạm tính</span><span id="cart-subtotal">0₫</span></div>
+    <button id="cart-clear" class="ghost">Xóa giỏ</button>
+    <button id="cart-checkout">Đặt món (demo)</button>
+  </footer>
+</aside>
+<div id="cart-backdrop"></div>
+
+<!-- ITEM MODAL (chi tiết món) -->
+<div id="item-modal" class="hidden" aria-hidden="true">
+  <div class="sheet">
+    <button class="close" id="item-close">✕</button>
+    <img id="item-img" alt="" />
+    <h3 id="item-name"></h3>
+    <div id="item-price"></div>
+    <p id="item-desc" class="muted"></p>
+    <div class="qty">
+      <button id="qty-dec">−</button>
+      <span id="qty-val">1</span>
+      <button id="qty-inc">+</button>
+    </div>
+    <button id="add-to-cart">Thêm vào giỏ</button>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div id="checkout-modal" class="hidden" aria-hidden="true">
+  <div class="sheet">
+    <button class="close" id="checkout-close">✕</button>
+    <h3 style="margin:0 0 8px;font-weight:900">Đặt món</h3>
+    <p class="muted" style="margin:0 0 10px">Vui lòng điền thông tin để xác nhận đơn.</p>
+
+    <form id="checkout-form">
+      <div class="field">
+        <label>Họ tên *</label>
+        <input id="ck-name" required placeholder="Nguyễn Văn A">
+      </div>
+      <div class="field">
+        <label>Số điện thoại *</label>
+        <input id="ck-phone" required placeholder="0909xxxxxx" pattern="^[0-9 +()-]{8,}$">
+      </div>
+      <div class="field">
+        <label>Hình thức *</label>
+        <select id="ck-method" required>
+          <option value="eat-in">Ăn tại chỗ</option>
+          <option value="takeaway">Mang đi</option>
+          <option value="delivery">Giao hàng</option>
+        </select>
+      </div>
+      <div class="field" id="ck-extra-wrap">
+        <label id="ck-extra-label">Số bàn (nếu ăn tại chỗ)</label>
+        <input id="ck-extra" placeholder="Bàn 5 / Địa chỉ giao / Ghi chú">
+      </div>
+      <div class="field">
+        <label>Ghi chú</label>
+        <textarea id="ck-note" rows="3" placeholder="Ít cay, ít dầu..."></textarea>
+      </div>
+
+      <div class="sum">
+        <span>Tổng thanh toán</span>
+        <strong id="ck-total">0₫</strong>
+      </div>
+
+      <button id="ck-submit" type="submit">Xác nhận đặt món</button>
+    </form>
+  </div>
+</div>
+
+<!-- Đã có sẵn: #cart-checkout (nút trong drawer) sẽ mở modal này -->
 
 <body>
 
@@ -954,6 +1356,260 @@
     }
     document.addEventListener('DOMContentLoaded', init);
   </script>
+  <script>
+    (() => {
+      const fmt = n => (n || 0).toLocaleString('vi-VN') + '₫';
+      const CART_KEY = 'dha_cart';
+      let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]'); // [{id,name,price,qty,img}]
+      const $ = (s, c = document) => c.querySelector(s);
+      const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
+
+      // ====== CART UI ======
+      const el = {
+        toggle: $('#cart-toggle'),
+        drawer: $('#cart-drawer'),
+        backdrop: $('#cart-backdrop'),
+        close: $('#cart-close'),
+        items: $('#cart-items'),
+        subtotal: $('#cart-subtotal'),
+        count: $('#cart-count'),
+        clear: $('#cart-clear'),
+        checkout: $('#cart-checkout'),
+      };
+
+      function saveCart() { localStorage.setItem(CART_KEY, JSON.stringify(cart)); renderCart(); }
+      function openCart() { el.drawer.classList.add('open'); el.backdrop.classList.add('show'); }
+      function closeCart() { el.drawer.classList.remove('open'); el.backdrop.classList.remove('show'); }
+      function calcSubtotal() { return cart.reduce((s, i) => s + i.price * i.qty, 0); }
+
+      function renderCart() {
+        el.items.innerHTML = cart.length ? '' : '<div class="muted">Giỏ trống</div>';
+        cart.forEach((it, idx) => {
+          const row = document.createElement('div');
+          row.className = 'cart-row';
+          row.innerHTML = `
+        <img src="${it.img || ''}" alt="">
+        <div>
+          <div class="name">${it.name}</div>
+          <div class="muted">${fmt(it.price)} × ${it.qty}</div>
+        </div>
+        <div class="ctrl">
+          <button data-act="dec" data-i="${idx}">−</button>
+          <span>${it.qty}</span>
+          <button data-act="inc" data-i="${idx}">+</button>
+        </div>`;
+          el.items.appendChild(row);
+        });
+        el.subtotal.textContent = fmt(calcSubtotal());
+        const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+        el.count.textContent = totalQty;
+      }
+
+      el.items.addEventListener('click', e => {
+        const btn = e.target.closest('button[data-act]');
+        if (!btn) return;
+        const i = +btn.dataset.i;
+        if (btn.dataset.act === 'inc') cart[i].qty++;
+        else cart[i].qty--;
+        if (cart[i].qty <= 0) cart.splice(i, 1);
+        saveCart();
+      });
+      el.toggle.addEventListener('click', openCart);
+      el.close.addEventListener('click', closeCart);
+      el.backdrop.addEventListener('click', closeCart);
+      el.clear.addEventListener('click', () => { cart = []; saveCart(); });
+      el.checkout.addEventListener('click', () => alert('Demo: gửi đơn hàng tới quầy/QR!'));
+
+      // ====== ITEM MODAL ======
+      const modal = $('#item-modal');
+      const m = {
+        sheet: modal.querySelector('.sheet'),
+        img: $('#item-img'),
+        name: $('#item-name'),
+        price: $('#item-price'),
+        desc: $('#item-desc'),
+        close: $('#item-close'),
+        inc: $('#qty-inc'),
+        dec: $('#qty-dec'),
+        val: $('#qty-val'),
+        add: $('#add-to-cart'),
+      };
+      let currentItem = null;
+
+      function openItem(item) {
+        currentItem = item;
+        m.img.src = item.img || '';
+        m.name.textContent = item.name;
+        m.price.textContent = fmt(item.price);
+        m.desc.textContent = item.desc || '';
+        m.val.textContent = '1';
+        modal.classList.remove('hidden');
+      }
+      function closeItem() { modal.classList.add('hidden'); }
+
+      m.inc.addEventListener('click', () => m.val.textContent = String(+m.val.textContent + 1));
+      m.dec.addEventListener('click', () => m.val.textContent = String(Math.max(1, +m.val.textContent - 1)));
+      m.close.addEventListener('click', closeItem);
+      modal.addEventListener('click', e => { if (e.target === modal) closeItem(); });
+      m.add.addEventListener('click', () => {
+        const qty = +m.val.textContent || 1;
+        const exist = cart.find(i => i.id === currentItem.id);
+        if (exist) exist.qty += qty;
+        else cart.push({ ...currentItem, qty });
+        saveCart();
+        closeItem();
+        // mở giỏ cho user thấy
+        openCart();
+      });
+
+      // ====== GẮN SỰ KIỆN VÀO CARD ======
+      // Một card phải có: .name, .price, .desc, img.card-img-top (hoặc .media img)
+      function bindCards() {
+        $$('.card').forEach(card => {
+          if (card.dataset.binded) return;
+          card.dataset.binded = '1';
+
+          // click mở chi tiết
+          card.addEventListener('click', e => {
+            // đừng bắt click vào nút tim thành mở modal
+            if (e.target.closest('.fav-btn')) return;
+
+            const name = card.querySelector('.name')?.textContent?.trim() || 'Món';
+            const price = Number((card.querySelector('.price')?.textContent || '').replace(/[^\d]/g, ''));
+            const desc = card.querySelector('.desc')?.textContent?.trim() || '';
+            const img = card.querySelector('img')?.src || '';
+            const id = (name.toLowerCase().replace(/\s+/g, '-') + '-' + price).slice(0, 60);
+            openItem({ id, name, price, desc, img });
+          });
+        });
+      }
+
+      // ====== INIT ======
+      document.addEventListener('DOMContentLoaded', () => {
+        renderCart();
+        bindCards();              // gắn sự kiện vào các card hiện có
+        // nếu ở trang bạn có tạo card động, hãy gọi lại bindCards() sau khi render
+      });
+    })();
+  </script>
+
+<script>
+(() => {
+  const $ = (s,c=document)=>c.querySelector(s);
+  const $$ = (s,c=document)=>Array.from(c.querySelectorAll(s));
+
+  // Lấy lại tham chiếu đã có từ phần giỏ (nếu bạn dùng IIFE trước, có thể copy phần dưới vào chung IIFE đó)
+  const CART_KEY = 'dha_cart';
+  const API_BASE = 'http://localhost:3001';           // đổi khi deploy
+  const API_ORDER = API_BASE + '/api/order';          // endpoint backend mới
+  const fmt = n => (n||0).toLocaleString('vi-VN') + '₫';
+
+  function getCart(){ return JSON.parse(localStorage.getItem(CART_KEY)||'[]'); }
+  function clearCart(){ localStorage.setItem(CART_KEY, '[]'); }
+
+  // Phần mở/đóng modal checkout
+  const ck = {
+    modal: $('#checkout-modal'),
+    close: $('#checkout-close'),
+    form: $('#checkout-form'),
+    name: $('#ck-name'),
+    phone: $('#ck-phone'),
+    method: $('#ck-method'),
+    extraWrap: $('#ck-extra-wrap'),
+    extraLabel: $('#ck-extra-label'),
+    extra: $('#ck-extra'),
+    note: $('#ck-note'),
+    total: $('#ck-total'),
+    submit: $('#ck-submit'),
+    cartBtn: $('#cart-checkout'),  // nút trong drawer
+  };
+
+  function openCheckout(){
+    const cart = getCart();
+    if (!cart.length) { alert('Giỏ hàng đang trống.'); return; }
+    const total = cart.reduce((s,i)=>s + (i.price*i.qty), 0);
+    ck.total.textContent = fmt(total);
+    // reset form:
+    ck.form.reset();
+    ck.method.value = 'eat-in';
+    ck.extra.placeholder = 'Bàn 5';
+    ck.extraLabel.textContent = 'Số bàn (nếu ăn tại chỗ)';
+    ck.modal.classList.remove('hidden');
+  }
+  function closeCheckout(){ ck.modal.classList.add('hidden'); }
+
+  ck.method.addEventListener('change', ()=>{
+    const v = ck.method.value;
+    if(v==='eat-in'){ ck.extraLabel.textContent = 'Số bàn'; ck.extra.placeholder='Bàn 5'; }
+    if(v==='takeaway'){ ck.extraLabel.textContent = 'Thời gian nhận (tuỳ chọn)'; ck.extra.placeholder='10:30'; }
+    if(v==='delivery'){ ck.extraLabel.textContent = 'Địa chỉ giao'; ck.extra.placeholder='Số nhà, đường, phường...'; }
+  });
+
+  // Mở modal khi bấm "Đặt món (demo)" trong drawer
+  ck.cartBtn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    openCheckout();
+  });
+
+  ck.close.addEventListener('click', closeCheckout);
+  ck.modal.addEventListener('click', e=>{ if(e.target===ck.modal) closeCheckout(); });
+
+  // Gửi đơn
+  ck.form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const cart = getCart();
+    if(!cart.length){ alert('Giỏ hàng trống.'); return; }
+
+    // Validate đơn giản
+    const name = ck.name.value.trim();
+    const phone = ck.phone.value.trim();
+    const method = ck.method.value;
+    const extra = ck.extra.value.trim();
+    const note = ck.note.value.trim();
+    if(!name || !phone){ alert('Vui lòng nhập họ tên và số điện thoại.'); return; }
+    if(method==='delivery' && !extra){ alert('Vui lòng nhập địa chỉ giao.'); return; }
+
+    const total = cart.reduce((s,i)=>s + (i.price*i.qty), 0);
+    const payload = {
+      orderCode: 'DH' + Date.now().toString().slice(-6), // mã đơn đơn giản
+      customer: { name, phone, method, extra, note },
+      items: cart.map(i=>({ id:i.id, name:i.name, price:i.price, qty:i.qty })),
+      total,
+      createdAt: new Date().toISOString()
+    };
+
+    try{
+      ck.submit.disabled = true;
+      const res = await fetch(API_ORDER, {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if(!res.ok){
+        console.error('Order error:', data);
+        alert('Xin lỗi, đặt món thất bại. Thử lại sau nhé!');
+        ck.submit.disabled = false;
+        return;
+      }
+
+      // Thành công
+      alert(`Đặt món thành công!\nMã đơn: ${data.orderId || payload.orderCode}`);
+      clearCart();
+      ck.submit.disabled = false;
+      closeCheckout();
+
+      // Nếu bạn có hàm renderCart() để cập nhật UI giỏ, gọi lại:
+      if (typeof renderCart === 'function') renderCart();
+    }catch(err){
+      console.error(err);
+      alert('Lỗi kết nối server. Vui lòng thử lại.');
+      ck.submit.disabled = false;
+    }
+  });
+})();
+</script>
 
 
 

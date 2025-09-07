@@ -1,0 +1,88 @@
+{
+  "menu": [
+    {
+      "id": 1,
+      "name": "Bánh mì đặc biệt",
+      "price": 35000,
+      "cat": "banhmi",
+      "desc": "Bánh mì thịt, pate, rau thơm"
+    },
+    {
+      "id": 2,
+      "name": "Bánh mì chả cá",
+      "price": 30000,
+      "cat": "banhmi",
+      "desc": "Bánh mì chả cá nóng giòn"
+    },
+    {
+      "id": 3,
+      "name": "Phở bò",
+      "price": 45000,
+      "cat": "pho",
+      "desc": "Phở bò truyền thống"
+    },
+    {
+      "id": 4,
+      "name": "Phở gà",
+      "price": 40000,
+      "cat": "pho",
+      "desc": "Phở gà ta thơm ngon"
+    },
+    {
+      "id": 5,
+      "name": "Nước cam",
+      "price": 25000,
+      "cat": "nuoc",
+      "desc": "Nước cam tươi mát"
+    },
+    {
+      "id": 6,
+      "name": "Trà đá",
+      "price": 5000,
+      "cat": "nuoc",
+      "desc": "Trà đá giải khát"
+    },
+    {
+      "id": 7,
+      "name": "Cà phê sữa",
+      "price": 20000,
+      "cat": "nuoc",
+      "desc": "Cà phê sữa đá đậm đà"
+    }
+  ],
+  "orders": [
+    {
+      "orderCode": "DH376251",
+      "customer": {
+        "name": "do hoai anh",
+        "phone": "0363970865",
+        "method": "eat-in",
+        "extra": "Bàn 5",
+        "note": ""
+      },
+      "items": [
+        {
+          "id": "bánh-mì-thịt-đặc-biệt-35000",
+          "name": "Bánh mì thịt đặc biệt",
+          "price": 35000,
+          "qty": 1
+        },
+        {
+          "id": "bánh-mì-gà-xé-30000",
+          "name": "Bánh mì gà xé",
+          "price": 30000,
+          "qty": 1
+        }
+      ],
+      "total": 65000,
+      "createdAt": "2025-09-07T15:02:56.251Z",
+      "id": 1
+    }
+  ],
+  "customers": [
+    {
+      "name": "do hoai anh",
+      "phone": "0363970865"
+    }
+  ]
+}

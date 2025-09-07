@@ -906,7 +906,7 @@
       </div>
       <div class="field">
         <label>Số điện thoại *</label>
-        <input id="ck-phone" required placeholder="0909xxxxxx" pattern="^[0-9 +()-]{8,}$">
+    <input id="ck-phone" required placeholder="0909xxxxxx" pattern="^[0-9]{8,}$">
       </div>
       <div class="field">
         <label>Hình thức *</label>
@@ -1255,7 +1255,7 @@
     }
 
     /* ================== CHAT BOX (gọi backend) ================== */
-    const API_URL = 'http://localhost:4000/api/suggest'; // đổi sang URL deploy khi lên server
+  const API_URL = 'http://localhost:3001/api/chat'; // đổi sang URL deploy khi lên server
 
     function ensureChatBox() {
       // đã có sẵn HTML chatbox và chat-fab trong DOM
@@ -1328,13 +1328,13 @@
           const res = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text, menu: flatMenu })
+            body: JSON.stringify({ messages: [{ role: 'user', content: text }], menu: flatMenu })
           });
           const data = await res.json();
           typing.remove();
 
           if (!res.ok) { addMsg('Xin lỗi, server đang bận. Thử lại sau nhé!', 'bot'); console.error(data); }
-          else { addMsg(data.answer || 'Mình chưa có gợi ý phù hợp, bạn mô tả rõ hơn nhé!', 'bot'); }
+          else { addMsg(data.reply || data.answer || 'Mình chưa có gợi ý phù hợp, bạn mô tả rõ hơn nhé!', 'bot'); }
         } catch (err) {
           typing.remove();
           addMsg('Lỗi kết nối backend. Kiểm tra API_URL hoặc mạng của bạn.', 'bot');

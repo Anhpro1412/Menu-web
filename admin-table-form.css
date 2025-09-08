@@ -1,0 +1,51 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+}
+
+th,
+td {
+  border: 1px solid #eee;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+th {
+  background: #f7b731;
+  color: #fff;
+}
+
+.actions button {
+  background: #fb5607;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  margin-right: 4px;
+  cursor: pointer;
+}
+
+.actions button.delete {
+  background: #e74c3c;
+}
+
+.add-form {
+  margin-bottom: 24px;
+}
+
+.add-form input,
+.add-form select {
+  margin-right: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.add-form button {
+  background: #6ea8fe;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+}

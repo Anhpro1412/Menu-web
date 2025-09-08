@@ -1,0 +1,32 @@
+/* Biến màu và font */
+:root {
+  --bg: #0f1115;
+  --fg: #eaeef6;
+  --muted: #96a0b5;
+  --accent: #ffb703;
+  --accent2: #fb5607;
+  --card: #171a22;
+  --border: rgba(255, 255, 255, .06);
+  --chat-offset: 80px;
+}
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Be Vietnam Pro", system-ui, Segoe UI, Roboto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}

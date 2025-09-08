@@ -1,0 +1,19 @@
+nav {
+  margin-bottom: 24px;
+}
+
+nav button {
+  margin-right: 12px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #f7b731;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+nav button.active {
+  background: #222;
+  color: #fff;
+}

@@ -77,12 +77,85 @@
       "total": 65000,
       "createdAt": "2025-09-07T15:02:56.251Z",
       "id": 1
+    },
+    {
+      "orderCode": "DH064862",
+      "customer": {
+        "name": "do hoai anh",
+        "phone": "0123456789",
+        "method": "eat-in",
+        "extra": "",
+        "note": "cay vvl"
+      },
+      "items": [
+        {
+          "id": "bánh-mì-thịt-đặc-biệt-35000",
+          "name": "Bánh mì thịt đặc biệt",
+          "price": 35000,
+          "qty": 1
+        },
+        {
+          "id": "bánh-mì-gà-xé-30000",
+          "name": "Bánh mì gà xé",
+          "price": 30000,
+          "qty": 1
+        }
+      ],
+      "total": 65000,
+      "createdAt": "2025-09-07T15:14:24.862Z",
+      "id": 2
+    },
+    {
+      "orderCode": "DH258705",
+      "customer": {
+        "name": "do hoai anh",
+        "phone": "0363970865",
+        "method": "eat-in",
+        "extra": "Bàn 5",
+        "note": ""
+      },
+      "items": [
+        {
+          "id": "phở-gà-ta-50000",
+          "name": "Phở gà ta",
+          "price": 50000,
+          "qty": 1
+        }
+      ],
+      "total": 50000,
+      "createdAt": "2025-09-07T16:24:18.705Z",
+      "id": 3
+    },
+    {
+      "orderCode": "DH108000",
+      "customer": {
+        "name": "DHA",
+        "phone": "0363970865",
+        "method": "eat-in",
+        "extra": "Bàn 5",
+        "note": ""
+      },
+      "items": [
+        {
+          "id": "cà-phê-sữa-đá-22000",
+          "name": "Cà phê sữa đá",
+          "price": 22000,
+          "qty": 1
+        }
+      ],
+      "total": 22000,
+      "createdAt": "2025-09-08T13:45:08.000Z",
+      "id": 4
     }
   ],
   "customers": [
     {
       "name": "do hoai anh",
       "phone": "0363970865"
+    },
+    {
+      "name": "do hoai anh",
+      "phone": "0123456789"
     }
   ]
 }
